@@ -1,8 +1,8 @@
 {
   "name": "fpm-plugin-socketio",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "FPM meets websocket connected socket",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "compile": "babel -d lib/ src/",
     "prepublish": "npm run compile",
@@ -32,6 +32,8 @@
     "babel-preset-stage-2": "^6.13.0",
     "babel-register": "^6.14.0",
     "babel-runtime": "^6.0.0",
+    "should": "^11.2.1",
+    "yf-fpm-client-nodejs": "^1.0.11",
     "yf-fpm-server": "^2.2.4"
   }
 }
