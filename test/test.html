@@ -52,45 +52,57 @@
       display: block;
       text-align: center;
     }
+    input{
+      padding:10px; margin: 10px;
+      display: inline-block;
+      height: 20px; font-size: 15px; line-height: 20px;
+      width: 300px;
+    }
+    label>span{
+      display: inline-block; width: 120px; text-align: right; margin-right: 2em;
+    }
+    .result{
+      display: block; width: 90%;
+    }
   </style>
 </head>
 <body>
-  <button class="js-btn">Send</button>
-  <button class="js-ack">Send <span class="small">(with acknowledgement)</span></button>
-  <button class="js-chatBtn">Chat</button>
+  <h3>Send</h3>
+  <label for="command"><span>Command:</span><input class="command" id="command" placeholder="ex:start , stop, info, update, exit"/></label>
+  <br/>
+  <label for="val"><span>Value:</span><input class="val" id="val" placeholder=""/></label>
+  <button class="js-sendBtn">Send</button>
   <div class="connections"><span class="js-connect">1</span></div>
+  <h3>Recive</h3>
+  <textarea id="result" class="result" rows="10"></textarea>
+  <h3>Image Prev</h3>
+  <img id="prev" src="" style="display: block; margin: 10px; width: 200px;"/>
   <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
   <script>
-    var socket = io()
-    var btn = document.querySelector( '.js-btn' )
-    btn.addEventListener( 'click', function( event ) {
-      socket.emit( 'data', {
-        foo: 'foo'
-      })
+    var server = io( 'http://api.yunplus.io' )
+    var resultText = document.querySelector( '.result' )
+    var prev = document.getElementById('prev');
+    var connect = document.querySelector( '.js-connect' )
+    server.on( 'message', function( event ) {
+      console.log('event', event)
+      if (event.target === 'server'){
+        switch(event.command){
+          case 'login':
+            connect.innerHTML = parseInt(connect.innerHTML) + 1
+            prev.setAttribute('src', 'data:image/jpg;base64,' + event.img)
+        }
+        // resultText.value = JSON.stringify(event, null, 2)
+      }
     })
-    var ack = document.querySelector( '.js-ack' )
-    ack.addEventListener( 'click', function( event ) {
-      socket.emit( 'ack', {
-        foo: 'foo'
-      }, res => {
-        console.log( 'acknowledgement:', res )
-      })
-    })
-    var connections = document.querySelector( '.js-connect' )
-    socket.on( 'connections', function( event ) {
-      console.log( 'connected', event )
-      connections.innerHTML = event.numConnections
-    })
-    socket.on( 'response', function( event ) {
-      console.log( 'response:', event.message )
-    })
-    var chat = io( 'http://localhost:9999' )
-    chat.on( 'message', function( event ) {
-      console.log( 'chat message:', event )
-    })
-    var chatBtn = document.querySelector( '.js-chatBtn' )
-    chatBtn.addEventListener( 'click', function( event ) {
-      chat.emit( 'message', 'yo central, are you on the line?' )
+    var sendBtn = document.querySelector( '.js-sendBtn' )
+    var commandInput = document.querySelector( '.command' )
+    var valInput = document.querySelector( '.val' )
+    sendBtn.addEventListener( 'click', function( event ) {
+      var message = {
+        command: commandInput.value,
+        val:valInput.value || ''
+      }
+      server.emit( 'message', message )
     })
   </script>
 </body>

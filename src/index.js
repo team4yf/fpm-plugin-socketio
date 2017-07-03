@@ -9,14 +9,16 @@ export default {
     const _io = fpm.app.io
     fpm.registerAction('BEFORE_SERVER_START', () => {
       _io.on( 'connection', ctx => {
-        console.log( 'Join event', ctx.socket.id )
+        fpm.publish('socketio.connection', {id: ctx.socket.id, data: ctx.data})
       } )
       _io.on( 'message', ctx => {
         _io.broadcast('message', ctx.data)
+        fpm.publish('socketio.message', ctx.data)
       } )
       _io.on( 'login', ctx => {
         ctx.data.channel = 'online'
         _io.broadcast('message', ctx.data)
+        fpm.publish('socketio.login', ctx.data)
       } )
     })
 

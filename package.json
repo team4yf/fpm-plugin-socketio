@@ -1,6 +1,6 @@
 {
   "name": "fpm-plugin-socketio",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "FPM meets websocket connected socket",
   "main": "lib/index.js",
   "scripts": {
