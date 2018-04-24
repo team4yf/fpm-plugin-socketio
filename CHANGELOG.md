@@ -4,7 +4,10 @@ Feature
 - Add `http-server` Develope Dep, can RUN command: `yarn run dev:client` Then Test The websocket Client
 - You can Code `fpm.publish('socketio.broadcast', message)` To broadcast message
 
-
+TODO
+- Add socket id 
+- Add send message to the client with id `fpm.publish('socket.send', { id, message} )`
+- Add more channel/event
 ## 0.0.4 (2017-07-03)
 
 Feature

@@ -10,6 +10,12 @@ biz.addSubModules('websocket',{
 			app.publish('socketio.broadcast', args)
             resolve({data: 1})
 		});
+	},
+	send:async function(args){
+		return new Promise( (resolve, reject) => {
+			app.publish('socketio.send', args)
+            resolve({data: 1})
+		});
 	}
 })
 app.addBizModules(biz);
