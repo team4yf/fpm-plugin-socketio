@@ -79,7 +79,7 @@
   <img id="prev" src="" style="display: block; margin: 10px; width: 200px;"/>
   <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
   <script>
-    var server = io( 'http://api.yunplus.io' )
+    var server = io( 'http://localhost:9999' )
     var resultText = document.querySelector( '.result' )
     var prev = document.getElementById('prev');
     var connect = document.querySelector( '.js-connect' )
@@ -92,6 +92,8 @@
             prev.setAttribute('src', 'data:image/jpg;base64,' + event.img)
         }
         // resultText.value = JSON.stringify(event, null, 2)
+      }else{
+        resultText.value = JSON.stringify(event)
       }
     })
     var sendBtn = document.querySelector( '.js-sendBtn' )

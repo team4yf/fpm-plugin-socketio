@@ -4,4 +4,4 @@ require('babel-core/register')({
 });
 require('babel-polyfill');
 
-require('./test.js');
+require('./dev.js');
