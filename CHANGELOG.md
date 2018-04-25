@@ -1,3 +1,8 @@
+## 1.0.2 (2017-04-25)
+
+Feature
+- Add `websocket.broadcast` & `websocket.send` To BizModules Automaticlly
+
 ## 1.0.0 (2017-04-24)
 
 Feature

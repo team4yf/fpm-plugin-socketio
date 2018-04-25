@@ -13,6 +13,18 @@ export default {
     const _io = fpm.app.io
     const _clients = {}
     fpm.registerAction('BEFORE_SERVER_START', () => {
+
+      const sendToClient = (data) => {
+        const id = trimId(data.id)
+        if(_.has(_clients, id)){
+          delete data.id
+          _clients[id].emit('message', data)
+          return true
+        }else{
+          return false
+        }
+      }
+
       _io.on( 'connection', ctx => {
         // let handshake = ctx.socket.handshake;
         const id = trimId(ctx.socket.id)
@@ -30,12 +42,27 @@ export default {
         fpm.publish('socketio.message',  {id: id, data: ctx.data})
       } )
 
-      fpm.subscribe('socketio.send', (topic, data) => {
-        const id = trimId(data.id)
-        if(_.has(_clients, id)){
-          delete data.id
-          _clients[id].emit('message', data)
+      // extend module
+      fpm.extendModule('websocket', {
+        broadcast:async function(args){
+          return new Promise( (resolve, reject) => {
+            _io.broadcast('message', args)
+            resolve({ data: 1 })
+          })
+        },
+        send:async function(args){
+          return new Promise( (resolve, reject) => {
+            if(sendToClient(args)){
+              resolve({ data: 1 })
+            }else{
+              reject({ errno: -1300, message: 'The Client Id Not Online'})
+            }
+          })
         }
+      })
+
+      fpm.subscribe('socketio.send', (topic, data) => {
+        sendToClient(data)
       })
 
       fpm.subscribe('socketio.broadcast', (topic, data) => {

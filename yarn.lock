@@ -4001,9 +4001,9 @@ yf-fpm-client-nodejs@^1.0.11:
     moment "^2.18.1"
     node-fetch "^1.6.3"
 
-yf-fpm-server@^2.2.21:
-  version "2.2.21"
-  resolved "https://registry.yarnpkg.com/yf-fpm-server/-/yf-fpm-server-2.2.21.tgz#35c09dcb654141a4268b3e771c66dd9c55dc0c08"
+yf-fpm-server@^2.2.22:
+  version "2.2.22"
+  resolved "https://registry.yarnpkg.com/yf-fpm-server/-/yf-fpm-server-2.2.22.tgz#2460d2c66fe0c60344ee4ef927e986918e81fe71"
   dependencies:
     koa "^2.0.0"
     koa-bodyparser "^3.2.0"

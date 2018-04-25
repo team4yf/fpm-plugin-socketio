@@ -1,6 +1,6 @@
 {
   "name": "fpm-plugin-socketio",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "FPM meets websocket connected socket",
   "main": "lib/index.js",
   "scripts": {
@@ -39,6 +39,6 @@
     "mocha": "^5.1.1",
     "nodemon": "^1.17.3",
     "yf-fpm-client-nodejs": "^1.0.11",
-    "yf-fpm-server": "^2.2.21"
+    "yf-fpm-server": "^2.2.22"
   }
 }
