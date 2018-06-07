@@ -2,6 +2,16 @@
 import _ from 'lodash'
 import IO from 'koa-socket'
 
+const E = {
+  SocketIO: {
+    CLIENT_OFFLINE: {
+      errno: -10001, 
+      code: 'CLIENT_OFFLINE', 
+      message: 'The Client Id Not Online'
+    }
+  }
+}
+
 const trimId = (id)=>{
   return _.trim(id, '/#')
 }
@@ -14,6 +24,25 @@ export default {
     const _clients = {}
     fpm.registerAction('BEFORE_SERVER_START', () => {
 
+      _io.on( 'connection', ctx => {
+        // let handshake = ctx.socket.handshake;
+        const id = trimId(ctx.socket.id)
+        _clients[id] = ctx.socket
+        ctx.socket.emit('connected')
+        fpm.publish('#socketio/connect', { id })
+      } )
+
+      _io.on( 'disconnect', ctx => {
+        const id = trimId(ctx.socket.id)
+        delete _clients[id]
+        fpm.publish('#socketio/disconnect', { id })
+      } )
+
+      _io.on( 'message', ctx => {
+        const id = trimId(ctx.socket.id)
+        fpm.publish('#socketio/message',  {id, data: ctx.data})
+      } )
+
       const sendToClient = (data) => {
         const id = trimId(data.id)
         if(_.has(_clients, id)){
@@ -25,49 +54,28 @@ export default {
         }
       }
 
-      _io.on( 'connection', ctx => {
-        // let handshake = ctx.socket.handshake;
-        const id = trimId(ctx.socket.id)
-        _clients[id] = ctx.socket
-        ctx.socket.emit('connected')
-        fpm.publish('socketio.connect', {id: id})
-      } )
-      _io.on( 'disconnect', ctx => {
-        const id = trimId(ctx.socket.id)
-        delete _clients[id]
-        fpm.publish('socketio.disconnect', {id: id})
-      })
-      _io.on( 'message', ctx => {
-        const id = trimId(ctx.socket.id)
-        fpm.publish('socketio.message',  {id: id, data: ctx.data})
-      } )
-
-      // extend module
-      fpm.extendModule('websocket', {
-        broadcast:async function(args){
+      const bizModule = {
+        broadcast: async (args) => {
           return new Promise( (resolve, reject) => {
             _io.broadcast('message', args)
             resolve({ data: 1 })
           })
         },
-        send:async function(args){
+        send: async (args) => {
           return new Promise( (resolve, reject) => {
             if(sendToClient(args)){
               resolve({ data: 1 })
             }else{
-              reject({ errno: -1300, message: 'The Client Id Not Online'})
+              reject(E.SocketIO.CLIENT_OFFLINE)
             }
           })
         }
-      })
+      }
 
-      fpm.subscribe('socketio.send', (topic, data) => {
-        sendToClient(data)
-      })
+      // extend module
+      fpm.extendModule('socketio', bizModule)
 
-      fpm.subscribe('socketio.broadcast', (topic, data) => {
-        _io.broadcast('message', data)
-      })
+      return bizModule
     })
   }
 }

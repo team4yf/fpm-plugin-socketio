@@ -1,12 +1,12 @@
 var should = require("chai").should();
-var YF = require("yf-fpm-client-nodejs").default;
+var fpmc = require("yf-fpm-client-js").default;
 
-YF.init({appkey: '123123', masterKey: '123123', endpoint: 'http://localhost:9999/api'});
+fpmc.init({appkey: '123123', masterKey: '123123', domain: 'http://localhost:9999'});
 
 
-describe('Websocket', function(){
+describe('socketio', function(){
   it('broadcast function', function(done){
-    var func = new YF.Func('websocket.broadcast');
+    var func = new fpmc.Func('socketio.broadcast');
     func.invoke({ip: '12.12.12.12'})
       .then(function(data){
         console.log(data);
@@ -16,8 +16,8 @@ describe('Websocket', function(){
       });
   });
   it('send function', function(done){
-    var func = new YF.Func('websocket.send');
-    func.invoke({id: 'pDqADoLNk2QagL_MAAAB', content: 123})
+    var func = new fpmc.Func('socketio.send');
+    func.invoke({id: 'FD8AJXLpxt8n8c51AAAA', content: 123})
       .then(function(data){
         console.log(data);
         done();
