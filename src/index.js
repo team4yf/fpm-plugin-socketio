@@ -1,12 +1,12 @@
 "use strict";
-import _ from 'lodash'
-import IO from 'koa-socket'
+const _ = require('lodash');
+const IO = require('koa-socket');
 
 const E = {
   SocketIO: {
     CLIENT_OFFLINE: {
-      errno: -10001, 
-      code: 'CLIENT_OFFLINE', 
+      errno: -10001,
+      code: 'CLIENT_OFFLINE',
       message: 'The Client Id Not Online'
     }
   }
@@ -16,7 +16,7 @@ const trimId = (id)=>{
   return _.trim(id, '/#')
 }
 
-export default {
+module.exports = {
   bind: (fpm) => {
     const io = new IO()
     io.attach( fpm.app )
@@ -47,7 +47,7 @@ export default {
         const id = trimId(data.id)
         if(_.has(_clients, id)){
           delete data.id
-          _clients[id].emit('message', data)
+          _clients[id].emit(data.topic || 'message', data)
           return true
         }else{
           return false
@@ -57,7 +57,7 @@ export default {
       const bizModule = {
         broadcast: async (args) => {
           return new Promise( (resolve, reject) => {
-            _io.broadcast('message', args)
+            _io.broadcast(args.topic || 'message', args)
             resolve({ data: 1 })
           })
         },

@@ -31,6 +31,8 @@ the socketio plugin for fpm
   `fpm.execute('socketio.send', message!Object) => Promise`
   - message must contains a 'id' , otherwise it return a rejected promise
 
+- *WARNNING* The topic should be replace of the args.topic.
+
 - Subscribe Event To Receive Message 
   - [ ] `#socketio/connect`
     ```javascript

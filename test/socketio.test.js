@@ -17,7 +17,7 @@ describe('socketio', function(){
   });
   it('send function', function(done){
     var func = new fpmc.Func('socketio.send');
-    func.invoke({id: 'FD8AJXLpxt8n8c51AAAA', content: 123})
+    func.invoke({topic: '#s2d/sxcq56iYodXifP7tAAAB', id: 'sxcq56iYodXifP7tAAAB', content: 'babababa'})
       .then(function(data){
         console.log(data);
         done();

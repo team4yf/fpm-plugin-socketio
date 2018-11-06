@@ -1,3 +1,8 @@
+## 1.0.4 (2018-11-06)
+change
+- `broadcast` and `send` Topic from `args.topic` default `message`
+- remove yarn
+
 ## 1.0.3 (2017-06-06)
 Change
 - `yf-fpm-client-js` & `yf-fpm-server`
