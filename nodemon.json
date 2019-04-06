@@ -25,6 +25,7 @@
   "watch": [
   ],
   "env": {
-    "NODE_ENV": "development"
+    "NODE_ENV": "development",
+    "DEBUG": "fpm-plugin-socketio"
   }
 }

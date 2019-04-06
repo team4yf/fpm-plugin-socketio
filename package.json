@@ -1,11 +1,9 @@
 {
   "name": "fpm-plugin-socketio",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "FPM meets websocket connected socket",
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "scripts": {
-    "compile": "./node_modules/.bin/babel -d lib/ src/",
-    "prepublishOnly": "npm run compile",
     "dev": "./node_modules/.bin/nodemon dev/dev.js",
     "dev:client": "echo \"http://localhost:8088/test.html\" && ./node_modules/.bin/http-server test -d False -s --cors -c-1 -p 8088",
     "test": "./node_modules/.bin/mocha test/*.test.js"
@@ -19,22 +17,18 @@
   "author": "YFsoftcom",
   "license": "MIT",
   "dependencies": {
+    "debug": "^4.1.1",
     "koa-socket": "^4.4.0",
     "lodash": "^4.17.4"
   },
   "devDependencies": {
-    "babel-cli": "^6.22.2",
-    "babel-core": "^6.14.0",
-    "babel-plugin-transform-runtime": "^6.0.0",
-    "babel-polyfill": "^6.13.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.14.0",
-    "babel-runtime": "^6.0.0",
-    "chai": "^4.1.2",
     "http-server": "^0.11.1",
     "mocha": "^5.1.1",
     "nodemon": "^1.17.3",
-    "yf-fpm-client-js": "^1.0.2",
-    "yf-fpm-server": "^2.4.9"
+    "fpmc-jssdk": "^1.0.7",
+    "yf-fpm-server": "^2.6.1"
+  },
+  "engines": {
+    "node": ">=8.11.1"
   }
 }
